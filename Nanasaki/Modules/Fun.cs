@@ -33,16 +33,16 @@ namespace Nanasaki.Modules
 			var client = new HttpClient();
 
 			var quoteJson = await client.GetStringAsync("https://animechan.vercel.app/api/random");
-			AnimeQuote quote = JsonConvert.DeserializeObject<AnimeQuote>(quoteJson);
+			var quote = JsonConvert.DeserializeObject<AnimeQuote>(quoteJson);
 
 			var animePicJson = await client.GetStringAsync($"https://api.jikan.moe/v3/search/anime?q={quote.anime}&limit=1");
-			var animeCoverPic = JsonConvert.DeserializeObject<dynamic>(animePicJson);
+			var animeCoverPic = JsonConvert.DeserializeObject<AnimePic>(animePicJson);
 
 			var embed = new NanasakiEmbedBuilder()
 				.AddField("アニメ", quote.anime, true)
 				.AddField("キャラ", quote.character, true)
 				.AddField("名言", quote.quote, false)
-				.WithThumbnailUrl(animeCoverPic.results[0].image_url.ToString())
+				.WithThumbnailUrl(animeCoverPic.results.First().image_url)
 				.Build();
 
 			await this.ReplyAsync(embed: embed);
