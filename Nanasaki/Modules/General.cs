@@ -28,6 +28,13 @@ namespace Nanasaki.Modules
 			await Context.Channel.SendMessageAsync("Pong!");
 		}
 
+		[Command("ym")]
+		public async Task HexGayAsync(SocketGuildUser socketGuildUser)
+		{
+			await Context.Channel.TriggerTypingAsync();
+			await Context.Channel.SendMessageAsync("your mom gay");
+		}
+
 		/// <summary>
 		/// Gets information about a user.
 		/// </summary>
