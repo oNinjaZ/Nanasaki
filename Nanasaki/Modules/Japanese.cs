@@ -21,6 +21,10 @@ namespace Nanasaki.Modules
         [Command("k")]
         public async Task KanjiSearch(string test)
         {
+            if (test.Length == 1)
+            {
+
+            
             var client = new HttpClient();
 
             string quoteJson = await client.GetStringAsync($"https://kanjiapi.dev/v1/kanji/{test}");
@@ -62,6 +66,13 @@ namespace Nanasaki.Modules
 
                 await Context.Channel.TriggerTypingAsync();
                 await Context.Channel.SendMessageAsync(embed: embed);
+            }
+            else
+            {
+                await Context.Channel.TriggerTypingAsync();
+                await Context.Channel.SendMessageAsync("`Usage:` -k {character}");
+            }
+
             }
             else
             {
