@@ -75,7 +75,7 @@ namespace Nanasaki.Modules
         {
             if (str.Any())
             {
-                return string.Join(" | ", str);
+                return string.Join(" **|** ", str);
             } else return "N/A";
         }
 
