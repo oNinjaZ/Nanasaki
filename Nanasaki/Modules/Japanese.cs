@@ -14,7 +14,7 @@ namespace Nanasaki.Modules
     public class Japanese : ModuleBase<SocketCommandContext>
     {
         /// <summary>
-        /// 
+        /// Searches for a single kanji character
         /// </summary>
         /// <param name="test"></param>
         /// <returns></returns>
