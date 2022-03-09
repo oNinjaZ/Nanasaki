@@ -59,6 +59,25 @@ namespace Nanasaki.Modules
 
         }
 
+        [Command("echi")]
+        public async Task EchoAsync()
+        {
+
+            var socketGuildUser = Context.User as SocketGuildUser;
+            if (socketGuildUser.Id == 559401993878110241)
+            {
+                await Context.Channel.TriggerTypingAsync();
+                await Context.Channel.SendMessageAsync("hey baby! " + Context.Message.Author.Mention + " ❤️");
+            }
+            else
+            {
+                await Context.Channel.TriggerTypingAsync();
+                await Context.Channel.SendMessageAsync("hello " + Context.Message.Author.Mention);
+            }
+
+
+        }
+
         [Command("quote")]
         public async Task Quote()
         {

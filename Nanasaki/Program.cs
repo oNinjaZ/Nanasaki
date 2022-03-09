@@ -48,6 +48,8 @@ namespace Nanasaki
 				.UseCommandService((context, config) =>
 				{
 					config.CaseSensitiveCommands = false;
+					config.ThrowOnError = false;
+					config.IgnoreExtraArgs = false;
 					config.LogLevel = Discord.LogSeverity.Debug;
 					config.DefaultRunMode = RunMode.Sync;
 				})

@@ -19,59 +19,68 @@ namespace Nanasaki.Modules
         /// <param name="test"></param>
         /// <returns></returns>
         [Command("k")]
-        public async Task KanjiSearch(string test)
+        public async Task KanjiSearch(params string[] test)
         {
-            if (test.Length == 1)
+            if (test[0].Length == 1)
             {
+                var kanjiQuery = $"https://kanjiapi.dev/v1/kanji/{test[0]}";
 
-            
-            var client = new HttpClient();
+                var client = new HttpClient();
+                HttpResponseMessage response = await client.GetAsync(kanjiQuery);
+                if (response.IsSuccessStatusCode)
+                {
+                    string quoteJson = await client.GetStringAsync(kanjiQuery);
 
-            string quoteJson = await client.GetStringAsync($"https://kanjiapi.dev/v1/kanji/{test}");
-            Kanji kanji = JsonConvert.DeserializeObject<Kanji>(quoteJson);
+                    Kanji kanji = JsonConvert.DeserializeObject<Kanji>(quoteJson);
 
-            /////////////////////
-            ///
-            var result = await client.GetStringAsync($"https://kanjiapi.dev/v1/words/{test}");
+                    /////////////////////
+                    ///
+                    var result = await client.GetStringAsync($"https://kanjiapi.dev/v1/words/{test[0]}");
 
-            List<Word> words = JsonConvert.DeserializeObject<List<Word>>(result);
+                    List<Word> words = JsonConvert.DeserializeObject<List<Word>>(result);
 
-            List<Variant> variantList = new();
+                    List<Variant> variantList = new();
 
-            foreach (var variant in words)
-            {
-                variantList.AddRange(variant.variants);
-            }
+                    foreach (var variant in words)
+                    {
+                        variantList.AddRange(variant.variants);
+                    }
 
-            variantList.RemoveAll(a => !a.priorities.Any() || a.priorities == null || a.written.Length < 2);
-            variantList = variantList.OrderBy(a => a.written.Length).ToList();
-            if (variantList.Count > 10) variantList = variantList.GetRange(0, 8);
+                    variantList.RemoveAll(a => !a.priorities.Any() || a.priorities == null || a.written.Length < 2);
+                    variantList = variantList.OrderBy(a => a.written.Length).ToList();
+                    if (variantList.Count > 10) variantList = variantList.GetRange(0, 8);
 
-            //////////////////////
+                    //////////////////////
+                    ///
+                    var grade = "N/A";
+                    if (kanji.grade != null) grade = kanji.grade + "年";
 
-            if (kanji != null)
-            {
-                var grade = "N/A";
-                if (kanji.grade != null) grade = kanji.grade + "年";
+                    var embed = new NanasakiEmbedBuilder()
+                        .WithTitle($"{kanji.kanji}")
+                        .WithUrl($"https://dictionary.goo.ne.jp/word/kanji/{test}/")
+                        .AddField("おん", getReadings(kanji.on_readings), true)
+                        .AddField("くん", getReadings(kanji.kun_readings), true)
+                        .AddField("意味", string.Join(", ", kanji.meanings))
+                        .AddField("Words", getOutput(variantList))
+                        .WithFooter(footer => footer.Text = $"学習漢字: {grade}")
+                        .Build();
 
-                var embed = new NanasakiEmbedBuilder()
-                    .WithTitle($"{kanji.kanji}")
-                    .WithUrl($"https://dictionary.goo.ne.jp/word/kanji/{test}/")
-                    .AddField("おん", getReadings(kanji.on_readings), true)
-                    .AddField("くん", getReadings(kanji.kun_readings), true)
-                    .AddField("意味", string.Join(", ", kanji.meanings))
-                    .AddField("Words",getOutput(variantList))
-                    .WithFooter(footer => footer.Text = $"学習漢字: {grade}")
-                    .Build();
+                    await Context.Channel.TriggerTypingAsync();
+                    await Context.Channel.SendMessageAsync(embed: embed);
 
-                await Context.Channel.TriggerTypingAsync();
-                await Context.Channel.SendMessageAsync(embed: embed);
-            }
-            else
-            {
-                await Context.Channel.TriggerTypingAsync();
-                await Context.Channel.SendMessageAsync("`Usage:` -k {character}");
-            }
+
+                }
+                else
+                {
+                    var embed = new NanasakiEmbedBuilder()
+                            .WithTitle($"ななさき漢字辞典")
+                            .WithDescription($"**{test[0]}**と一致する情報は見つかりませんでした")
+                            .Build();
+
+                    await Context.Channel.TriggerTypingAsync();
+                    await Context.Channel.SendMessageAsync(embed: embed);
+                }
+
 
             }
             else
@@ -87,7 +96,8 @@ namespace Nanasaki.Modules
             if (str.Any())
             {
                 return string.Join(" **|** ", str);
-            } else return "N/A";
+            }
+            else return "N/A";
         }
 
         private string getOutput(List<Variant> variants)
