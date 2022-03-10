@@ -63,15 +63,11 @@ namespace Nanasaki.Modules
                         .AddField("くん読み", getReadings(kanji.kun_readings), true)
                         .AddField("意味", string.Join(", ", kanji.meanings))
                         .AddField("Words", getOutput(variantList))
-                        .WithImageUrl(@"D:\C#\Discord\Nanasaki\Nanasaki\bin\Images\file.png")
+                        .WithThumbnailUrl(await getImage(test[0], client))
                         .WithFooter(footer => footer.Text = $"学習漢字: {grade}")
                         .Build();
 
-                    /*await Context.Channel.TriggerTypingAsync();
-                    await Context.Channel.SendFileAsync(@"D:\C#\Discord\Nanasaki\Nanasaki\bin\Images\file.png");*/
-                    //
-
-                    await Context.Channel.TriggerTypingAsync();
+                    await Context.Channel.TriggerTypingAsync();                
                     await Context.Channel.SendMessageAsync(embed: embed);
 
 
@@ -116,14 +112,11 @@ namespace Nanasaki.Modules
             return string.Join(" | ", result);
         }
 
-        private async Task<string> getImage(string kanji)
+        private async Task<string> getImage(string kanji, HttpClient client)
         {
-            var convertApi = new ConvertApi("NGQjYpKYF4cN8PMp");
-            var convert = await convertApi.ConvertAsync("svg", "png",
-                new ConvertApiFileParam("File", @"C:\path\to\my_file.svg")
-            );
-            await convert.SaveFilesAsync(@"C:\converted-files\");
-            return "";
+            var kanjiJson = await client.GetStringAsync($"https://v2.convertapi.com/convert/svg/to/png?Secret=NGQjYpKYF4cN8PMp&StoreFile=true&&File=https://www.miraisoft.de/anikanjivgx/?svg={kanji}");
+            var kanjiPng = JsonConvert.DeserializeObject<KanjiConvertApi>(kanjiJson);
+            return kanjiPng.Files[0].Url;
         }
 
     }
