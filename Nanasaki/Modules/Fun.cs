@@ -44,15 +44,25 @@ namespace Nanasaki.Modules
         public async Task InfoAsync()
         {
 
+            
             var socketGuildUser = Context.User as SocketGuildUser;
+
+            await Context.Channel.TriggerTypingAsync();
+
             if (socketGuildUser.Id == 559401993878110241)
             {
-                await Context.Channel.TriggerTypingAsync();
-                await Context.Channel.SendMessageAsync("hey baby! " + Context.Message.Author.Mention + " ❤️");
+                await Context.Channel.SendMessageAsync("こんにちは、先輩！ " + Context.Message.Author.Mention + " ❤️");
+            } 
+            else if (socketGuildUser.Id == 355553281357119490)
+            {
+                await Context.Channel.SendMessageAsync("hi ate! " + Context.Message.Author.Mention);
+            }
+            else if (socketGuildUser.Id == 306931050460741632)
+            {
+                await Context.Channel.SendMessageAsync("your mom said hi too, " + Context.Message.Author.Mention);
             }
             else
             {
-                await Context.Channel.TriggerTypingAsync();
                 await Context.Channel.SendMessageAsync("hello " + Context.Message.Author.Mention);
             }
 
