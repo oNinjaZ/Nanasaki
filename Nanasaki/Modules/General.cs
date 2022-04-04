@@ -28,6 +28,13 @@ namespace Nanasaki.Modules
 			await Context.Channel.SendMessageAsync("Pong!");
 		}
 
+        [Command("help")]
+        public async Task HelpAsync()
+        {
+            await Context.Channel.TriggerTypingAsync();
+            await Context.Channel.SendMessageAsync("fu");
+        }
+
 		/// <summary>
 		/// Gets information about a user.
 		/// </summary>

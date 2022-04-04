@@ -44,8 +44,8 @@ namespace Nanasaki.Services
 			{
 				return;
 			}
-
-			await commandContext.Channel.SendMessageAsync(result.ErrorReason);
+			await Task.CompletedTask;
+			//await commandContext.Channel.SendMessageAsync(result.ErrorReason);
 		}
 
 		private async Task OnUserMessage(SocketMessage socketMessage)
