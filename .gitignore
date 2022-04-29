@@ -10,6 +10,7 @@
 *.userosscache
 *.sln.docstates
 Nanasaki/appsettings.json
+Nanasaki/nanasaki.db
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
