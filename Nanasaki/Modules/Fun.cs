@@ -28,23 +28,10 @@ namespace Nanasaki.Modules
             await Context.Channel.SendMessageAsync(waifu.url);
         }
 
-        [Command("test")]
-        public async Task Test()
-        {
-            /*			var client = new HttpClient();
-                        var result = await client.GetStringAsync("https://api.waifu.pics/sfw/waifu");
-
-                        Waifu waifu = JsonConvert.DeserializeObject<Waifu>(result);*/
-
-            await Context.Channel.TriggerTypingAsync();
-            await Context.Channel.SendMessageAsync("hey babe @firefly#8959");
-        }
-
         [Command("hey")]
         public async Task InfoAsync()
         {
 
-            
             var socketGuildUser = Context.User as SocketGuildUser;
 
             await Context.Channel.TriggerTypingAsync();
@@ -52,7 +39,7 @@ namespace Nanasaki.Modules
             if (socketGuildUser.Id == 559401993878110241)
             {
                 await Context.Channel.SendMessageAsync("こんにちは、先輩！ " + Context.Message.Author.Mention + " ❤️");
-            } 
+            }
             else if (socketGuildUser.Id == 355553281357119490)
             {
                 await Context.Channel.SendMessageAsync("hi ate! " + Context.Message.Author.Mention);
@@ -66,7 +53,17 @@ namespace Nanasaki.Modules
                 await Context.Channel.SendMessageAsync("hello " + Context.Message.Author.Mention);
             }
 
+        }
 
+        /// <summary>
+        /// Responds with "Pong!".
+        /// </summary>
+        /// <returns></returns>
+        [Command("ping")]
+        public async Task PingAsync()
+        {
+            await Context.Channel.TriggerTypingAsync();
+            await Context.Channel.SendMessageAsync("Pong!");
         }
 
         [Command("echi")]

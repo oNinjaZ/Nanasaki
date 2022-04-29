@@ -17,17 +17,6 @@ namespace Nanasaki.Modules
 	public class General : ModuleBase<SocketCommandContext>
 	{
 
-		/// <summary>
-		/// Responds with "Pong!".
-		/// </summary>
-		/// <returns></returns>
-		[Command("ping")]
-		public async Task PingAsync()
-		{
-			await Context.Channel.TriggerTypingAsync();
-			await Context.Channel.SendMessageAsync("Pong!");
-		}
-
         [Command("help")]
         public async Task HelpAsync()
         {
