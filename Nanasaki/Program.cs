@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Discord.Addons.Hosting;
 using Discord.Commands;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Nanasaki.Data;
 using Nanasaki.Services;
 
 namespace Nanasaki
@@ -56,10 +58,19 @@ namespace Nanasaki
 				.ConfigureServices((context, services) =>
 				{
 					services.AddHostedService<CommandHandler>();
+					services.AddSingleton<IDbConnectionFactory>(_ =>
+					new SqliteConnectionFactory(
+						context.Configuration.GetValue<string>("Database:ConnectionString")
+					));
+					services.AddSingleton<DatabaseInitializer>();
 				})
 				.UseConsoleLifetime();
 
 			var host = builder.Build();
+			
+			var databaseInit = host.Services.GetRequiredService<DatabaseInitializer>();
+			await databaseInit.InitializeAsync();
+
 			using (host)
 			{
 				await host.RunAsync();
