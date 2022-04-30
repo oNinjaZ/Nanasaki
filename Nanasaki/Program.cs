@@ -58,6 +58,7 @@ namespace Nanasaki
 				.ConfigureServices((context, services) =>
 				{
 					services.AddHostedService<CommandHandler>();
+					services.AddSingleton<IUserService, UserService>();
 					services.AddSingleton<IDbConnectionFactory>(_ =>
 					new SqliteConnectionFactory(
 						context.Configuration.GetValue<string>("Database:ConnectionString")
