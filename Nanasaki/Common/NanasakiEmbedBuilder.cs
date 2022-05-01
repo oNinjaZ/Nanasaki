@@ -10,7 +10,7 @@ namespace Nanasaki.Common
 	/// <summary>
 	/// Custom embed builder theme for Nanasaki
 	/// </summary>
-	internal class NanasakiEmbedBuilder : EmbedBuilder
+	public class NanasakiEmbedBuilder : EmbedBuilder
 	{
 		public NanasakiEmbedBuilder()
 		{
