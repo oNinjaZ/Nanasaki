@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Discord.Commands;
 using Discord.WebSocket;
 using Nanasaki.Common;
+using Nanasaki.Embeds;
 using Nanasaki.Models;
 using Nanasaki.Services;
 
@@ -43,7 +44,11 @@ public class UserCommands : ModuleBase<SocketCommandContext>
         await Context.Channel.TriggerTypingAsync();
         if (isCreated)
         {
-            await Context.Channel.SendMessageAsync($"User created!");
+            var embed = new NanasakiEmbedBuilder()
+                .WithDescription($"Account `{username}` successfully registered!")
+                .Build();
+            await Context.Channel.TriggerTypingAsync();
+            await this.ReplyAsync(embed: embed);
             return;
         }
         await Context.Channel.SendMessageAsync($"Error: failed to register"); //implement
@@ -97,5 +102,16 @@ public class UserCommands : ModuleBase<SocketCommandContext>
             .WithDescription($"No existing account found for {nickname}")
             .Build();
         await this.ReplyAsync(embed: errorEmbed);
+    }
+
+    [Command("help user")]
+    public async Task UserHelp()
+    {
+        var embed = new UserEmbedBuilder()
+            .WithHelpCommands()
+            .Build();
+            
+        await Context.Channel.TriggerTypingAsync();
+        await this.ReplyAsync(embed: embed);
     }
 }
