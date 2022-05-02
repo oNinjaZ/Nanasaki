@@ -18,8 +18,13 @@ public class DatabaseInitializer
         await connection.ExecuteAsync(
             @"CREATE TABLE IF NOT EXISTS Users(
                 Id TEXT PRIMARY KEY,
-                Username TEXT NOY NULL,
-                RegistrationDate TEXT NOT NULL)"
+                Username TEXT NOT NULL,
+                RegistrationDate TEXT NOT NULL);
+             CREATE TABLE IF NOT EXISTS BookLogs(
+                Id TEXT PRIMARY KEY,
+                PagesRead INTEGER,
+                LogDate TEXT NOT NULL);
+                "
             );
     }
 }
