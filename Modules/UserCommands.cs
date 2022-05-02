@@ -1,3 +1,4 @@
+using System.Reflection.Emit;
 using System;
 using System.Threading.Tasks;
 using Discord.Commands;
@@ -144,5 +145,22 @@ public class UserCommands : ModuleBase<SocketCommandContext>
 
         await Context.Channel.TriggerTypingAsync();
         await this.ReplyAsync(embed: embed);
+    }
+
+    [Command("user get all")]
+    public async Task GetAllUsers()
+    {
+        await Context.Channel.TriggerTypingAsync();
+        var users = await _userService.GetAllAsync();
+        var embed = users.MapAllToUserEmbed()
+        .Build();
+        await this.ReplyAsync(embed: embed);
+    }
+
+        [Command("user get")]
+    public async Task GetUser(SocketGuildUser socketGuildUser)
+    {
+        await Context.Channel.TriggerTypingAsync();
+        await this.ReplyAsync("`user get @user` triggered [test]");
     }
 }
