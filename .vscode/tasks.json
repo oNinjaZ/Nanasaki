@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Nanasaki/Nanasaki.csproj",
+                "${workspaceFolder}/Nanasaki.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/Nanasaki/Nanasaki.csproj",
+                "${workspaceFolder}/Nanasaki.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/Nanasaki/Nanasaki.csproj"
+                "${workspaceFolder}/Nanasaki.csproj"
             ],
             "problemMatcher": "$msCompile"
         }
