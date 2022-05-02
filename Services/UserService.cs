@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapper;
 using Nanasaki.Data;
@@ -38,6 +39,12 @@ public class UserService : IUserService
             DELETE FROM Users
             WHERE Id = @Id", new { Id = id });
         return result > 0;
+    }
+
+    public async Task<IEnumerable<User>> GetAllAsync()
+    {
+        using var connection = await _connectionFactory.CreateConnectionAsync();
+        return await connection.QueryAsync<User>("SELECT * From Users");
     }
 
     public async Task<User?> GetUserByIdAsync(string id)
