@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Discord.Addons.Hosting;
 using Discord.Commands;
 using Discord.WebSocket;
+using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -64,6 +65,7 @@ namespace Nanasaki
 						context.Configuration.GetValue<string>("Database:ConnectionString")
 					));
 					services.AddSingleton<DatabaseInitializer>();
+					services.AddValidatorsFromAssemblyContaining<Program>();
 				})
 				.UseConsoleLifetime();
 
