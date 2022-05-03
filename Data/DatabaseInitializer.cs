@@ -22,6 +22,7 @@ public class DatabaseInitializer
                 RegistrationDate TEXT NOT NULL);
              CREATE TABLE IF NOT EXISTS BookLogs(
                 Id TEXT PRIMARY KEY,
+                User TEXT NOT NULL,
                 PagesRead INTEGER,
                 LogDate TEXT NOT NULL);
                 "
